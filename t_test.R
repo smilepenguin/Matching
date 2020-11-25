@@ -8,6 +8,7 @@ library(MatchIt)
 source("numerical_tests.r")
 
 source("categorical_tests.r")
+
 max_T = 500
 All_tests<- seq(100, max_T, by = 10)
 
@@ -123,8 +124,22 @@ ggplot(All_tests, aes(x = number_T)) +
   geom_line( alpha= 0.5, aes(y = V5, color="num_tests = 8")) +
   geom_point(size = 1, aes(y = V6)) + 
   geom_line( alpha= 0.5, aes(y = V6, color="num_tests = 10")) +
-  theme_bw()+
+  theme_bw() +
+  theme() +
   ylab("Число пациентов, принимающих плацебо") +
-  чlab("Число пациентов, принимающих лекарства")
-  ggtitle("Количество пациентов, принимающих плацебо при разном количестве тестов")+
-  scale_colour_manual("Количество проверяемых тестов", values = c('red','blue', 'orange', 'green', 'yellow'))
+  xlab("Число пациентов, принимающих лекарства") +
+  ggtitle("Количество пациентов при разном количестве тестов") +
+  scale_colour_manual("Число тестов", values = c('red','blue', 'orange', 'green', 'yellow')) +
+  scale_x_continuous(breaks = seq(100, max_T, 25)) +
+  scale_y_continuous(breaks = seq(100, 2000, 50)) +
+  theme(strip.text.x = element_text(size = 10, face = 'bold'),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size=10))
+  
+  
+  
+  #save(All_tests, file = "All_tests.RData")
