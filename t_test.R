@@ -8,10 +8,10 @@ library(MatchIt)
 source("numerical_tests.r")
 
 source("categorical_tests.r")
-max_T = 130
+max_T = 500
 All_tests<- seq(100, max_T, by = 10)
 
-for (tests in 1:2) {
+for (tests in 1:5) {
 
   All_num_R<-c()
   tests<- 1
@@ -79,7 +79,7 @@ for (tests in 1:2) {
   
   
   
-  fmla <- as.formula(paste("Group ~ ", paste(colnames(Patients)[1:(ncol(Patients)-2)], collapse= "+")))
+  fmla <- as.formula(paste("Group ~ ", paste(colnames(Patients)[1:(ncol(Patients)-2)], collapse = "+")))
   
   mod_match <-
     matchit(
@@ -109,4 +109,22 @@ for (tests in 1:2) {
   }
   All_tests <- cbind(All_tests, All_num_R)
 }
+All_tests <- data.frame(All_tests)
+colnames(All_tests)[1] <- "number_T"
 
+ggplot(All_tests, aes(x = number_T)) + 
+  geom_point(size = 1, aes(y = V2)) + 
+  geom_line( alpha= 0.5, aes(y = V2, color="num_tests = 2")) +
+  geom_point(size = 1, aes(y = V3)) + 
+  geom_line( alpha= 0.5, aes(y = V3, color="num_tests = 4")) +
+  geom_point(size = 1, aes(y = V4)) + 
+  geom_line( alpha= 0.5, aes(y = V4, color="num_tests = 6")) +
+  geom_point(size = 1, aes(y = V5)) + 
+  geom_line( alpha= 0.5, aes(y = V5, color="num_tests = 8")) +
+  geom_point(size = 1, aes(y = V6)) + 
+  geom_line( alpha= 0.5, aes(y = V6, color="num_tests = 10")) +
+  theme_bw()+
+  ylab("Число пациентов, принимающих плацебо") +
+  чlab("Число пациентов, принимающих лекарства")
+  ggtitle("Количество пациентов, принимающих плацебо при разном количестве тестов")+
+  scale_colour_manual("Количество проверяемых тестов", values = c('red','blue', 'orange', 'green', 'yellow'))
