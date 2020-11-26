@@ -99,7 +99,7 @@ for (tests in 1:5) {
  
   for (z in 1:tests){
     if (
-      t.test(newdf[,z] ~ Group, newdf, var.equal = TRUE)$p.value > 0.05 &
+      wilcox.test(newdf[,z] ~ Group, newdf, var.equal = TRUE)$p.value > 0.05 &
       chisq.test(newdf[,(tests + z)], newdf$Group)$p.value > 0.05)
     P_values <- P_values + 1  
       }
@@ -142,4 +142,4 @@ ggplot(All_tests, aes(x = number_T)) +
   
   
   
-  #save(All_tests, file = "All_tests.RData")
+  #save(All_tests, file = "All_tests_wilcox.RData")

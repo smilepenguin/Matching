@@ -17,4 +17,5 @@ GV <- function(x){
           axis.text.y = element_text(size = 14),
           legend.text = element_text(size = 14),
           legend.title = element_text(size=14))
+  
 }

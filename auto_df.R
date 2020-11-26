@@ -6,7 +6,7 @@ library(ggpubr)
 library(MatchIt)
 
 num_T <- 50
-num_R <- 100
+num_R <- 300
 
 source("numerical_tests.r")
 
