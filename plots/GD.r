@@ -14,5 +14,6 @@ GD <- function(x){
                  axis.text.x = element_text(size = 14),
                  axis.text.y = element_text(size = 14),
                  legend.text = element_text(size = 14),
-                 legend.title = element_text(size=14)))
+                 legend.title = element_text(size=14))
+         )
 }

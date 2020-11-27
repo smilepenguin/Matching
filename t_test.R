@@ -132,7 +132,7 @@ ggplot(All_tests, aes(x = number_T)) +
   scale_colour_manual("Число тестов",
                       values = c('red', 'blue', 'orange', 'green', 'yellow')) +
   scale_x_continuous(breaks = seq(100, max_T, step)) +
-  scale_y_continuous(breaks = seq(100, 5000, step2)) +
+  scale_y_continuous(breaks = seq(100, 5000, step)) +
   theme(
     strip.text.x = element_text(size = 10, face = 'bold'),
     axis.title.x = element_text(size = 14),
