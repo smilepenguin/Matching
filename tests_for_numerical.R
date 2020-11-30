@@ -7,22 +7,27 @@ library(MatchIt)
 
 source("numerical_tests.r")
 
-step = 50
-step2 = 15
+step_T = 50
+step_R = 20
 min_T = 100
-max_T = 150
-All_tests <- seq(100, max_T, by = step)
+max_T = 500
+col_tests = 5
+av_num_R <- matrix(0, (max_T - min_T)/step_T + 1, col_tests + 1)
+col_repeat = 10
 
-for (tests in 1:5) {
+
+for (rep in 1:col_repeat ){
+All_tests <- seq(min_T, max_T, by = step_T)
+for (tests in 1:col_tests) {
   All_num_R <- c()
   
   
-  for (num_T in seq(min_T, max_T, by = step)) {
+  for (num_T in seq(min_T, max_T, by = step_T)) {
     P_values = 0
     num_R <- num_T
     while (P_values != tests) {
       P_values = 0
-      num_R <- num_R + step2
+      num_R <- num_R + step_R
       Patients <- c()
       
       for (k in 1:tests) {
@@ -55,7 +60,7 @@ for (tests in 1:5) {
                                       rep(0, num_R)), levels = c('R', 'T'))
       
       
-      
+     ### tests for matching 
       fmla <-
         as.formula(paste("Group ~ ", paste(colnames(Patients)[1:(ncol(Patients) -
                                                                    2)], collapse = "+")))
@@ -83,12 +88,18 @@ for (tests in 1:5) {
     print(num_R)
   }
   All_tests <- cbind(All_tests, All_num_R)
+  print(All_tests)
 }
+av_num_R <- av_num_R + All_tests
+rep
+}
+av_num_R <- av_num_R/col_repeat
+av_num_R <- data.frame(av_num_R)
 
-All_tests <- data.frame(All_tests)
-colnames(All_tests)[1] <- "number_T"
 
-ggplot(All_tests, aes(x = number_T)) +
+colnames(av_num_R)[1] <- "number_T"
+
+ggplot(av_num_R, aes(x = number_T)) +
   geom_point(size = 1, aes(y = V2)) +
   geom_line(alpha = 0.5, aes(y = V2, color = "num_tests = 1")) +
   geom_point(size = 1, aes(y = V3)) +
@@ -106,8 +117,8 @@ ggplot(All_tests, aes(x = number_T)) +
   ggtitle(" оличество пациентов при разном количестве тестов") +
   scale_colour_manual("„исло тестов",
                       values = c('red', 'blue', 'orange', 'green', 'yellow')) +
-  scale_x_continuous(breaks = seq(100, max_T, step)) +
-  scale_y_continuous(breaks = seq(100, 3000, step)) +
+  scale_x_continuous(breaks = seq(100, max_T, step_T)) +
+  scale_y_continuous(breaks = seq(100, 3000, step_T)) +
   theme(
     strip.text.x = element_text(size = 10, face = 'bold'),
     axis.title.x = element_text(size = 14),
@@ -121,18 +132,19 @@ ggplot(All_tests, aes(x = number_T)) +
 
 library(tidyr)
 
-tmydf <- setNames(data.frame(t(All_tests[, -1])), All_tests[,1])
+tmydf <- setNames(data.frame(t(av_num_R[, -1])), av_num_R[,1])
 #colnames(tmydf) <- c("T100","T150","T200","T250","T300","T350","T400","T450","T500")
-tmydf <- cbind(tmydf, tests = seq(1, 5, b = 1))
+tmydf <- cbind(tmydf, tests = seq(1, 5, by = 1))
 All_tests_for_plot <- tmydf %>%
   pivot_longer(cols = colnames(tmydf[,-ncol(tmydf)]) ,
                names_to = "names",
                values_to = "value")
 
-ggplot(All_tests_for_plot, aes(x = value, fill=tests)) +
-  geom_point(size = 1, aes(y = tests)) +
-  geom_line(alpha = 0.5, aes(y = tests)) +
+ggplot(All_tests_for_plot, aes(x = tests)) +
+  geom_point(size = 1, aes(y = value)) +
+  geom_line(alpha = 0.5, aes(y = value)) +
   facet_wrap(.~names, scales = "free") +
+  ylab("Num_R") +
   ggtitle(" оличество пациентов, принимающих плацебо, при разном количестве тестов") +
   theme_bw() +
   theme() +
