@@ -97,11 +97,6 @@ for (tests in 1:5) {
                 method = "nearest",
                 data = Patients)
       newdf <- match.data(mod_match)
-      library(tidyr)
-      New_Patients_for_plot <- newdf %>%
-        pivot_longer(cols = numerical_tests[c(1:tests), 1],
-                     names_to = "names",
-                     values_to = "value")
       
       newdf$Group <-  factor(newdf$Group, labels = c('R', 'T'))
       
@@ -113,7 +108,7 @@ for (tests in 1:5) {
       
     }
     All_num_R <- rbind(All_num_R, num_R)
-    print(num_R)
+   
   }
   All_tests <- cbind(All_tests, All_num_R)
   print(All_tests)
@@ -123,6 +118,7 @@ for (tests in 1:5) {
 }
 av_num_R <- av_num_R/col_repeat
 av_num_R <- data.frame(av_num_R)
+
 
 ggplot(av_num_R, aes(x = number_T)) +
   geom_point(size = 1, aes(y = V2)) +
