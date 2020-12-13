@@ -105,6 +105,7 @@ step_R = 10
   )
   heatmaply(
     All_tests,
-    scale_fill_gradient_fun = gradient_col
+    scale_fill_gradient_fun = gradient_col,
+    cellnote = All_tests
   )
   
