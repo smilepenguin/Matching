@@ -91,21 +91,15 @@ step_R = 10
  # print(rep)
 #}
 
-  heatmaply(
-    All_tests,
-    colors = viridis(n = 256,  option = "magma"),
-    k_col = 2, 
-    k_row = 2
-  )
+
   
-  
-  gradient_col <- ggplot2::scale_fill_gradient2(
-    low = "blue", high = "red", 
-    midpoint = 4
-  )
   heatmaply(
     All_tests,
     scale_fill_gradient_fun = gradient_col,
-    cellnote = All_tests
-  )
+    cellnote = All_tests,
+    xlab = "Количество проверяемых тестов",
+    ylab = "Разброс/ average_R",
+    dendrogram = 'none'
+    )
+  
   
